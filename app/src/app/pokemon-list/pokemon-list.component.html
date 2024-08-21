@@ -1,0 +1,15 @@
+<h1>Lista de Pokémons</h1>
+<div *ngIf="pokemons.length > 0">
+  <div *ngFor="let pokemon of pokemons">
+    {{ pokemon.name }}
+  </div>
+  <button (click)="loadMore()" [disabled]="loading">
+    {{ loading ? 'Loading...' : 'Load More' }}
+  </button>
+</div>
+<div *ngIf="pokemons.length === 0 && !loading">
+  No Pokémon found.
+</div>
+<div *ngIf="loading">
+  Loading...
+</div>
