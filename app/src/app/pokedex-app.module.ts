@@ -6,6 +6,7 @@ import { routes } from './pokedex-app.routes';
 import { PokedexAppComponent } from "./pokedex-app.component";
 import { PokemonService } from "./pokemon/pokemon.service";
 import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http"
   providers: [
     PokemonService,
     provideHttpClient(withInterceptorsFromDi()),
+    provideAnimationsAsync(),
   ],
   declarations: [
     PokedexAppComponent,
