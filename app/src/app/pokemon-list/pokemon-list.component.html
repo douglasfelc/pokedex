@@ -1,25 +1,27 @@
 <h1>Pokémons List</h1>
 
-<!-- Pokémon List -->
-<ng-container *ngIf="pokemons.length > 0; else noPokemons">
-  <mat-card *ngFor="let pokemon of pokemons" class="pokemon-card">
-    <mat-card-title>{{ pokemon.name }}</mat-card-title>
-  </mat-card>
+<div class="pokemon-container">
+  <ng-container *ngIf="pokemons.length > 0; else noPokemons">
+    <div class="pokemon-grid">
+      <mat-card *ngFor="let pokemon of pokemons" class="pokemon-card">
+        <img mat-card-image [src]="getPokemonImageUrl(pokemon.id)" alt="{{ pokemon.name }}">
+        <mat-card-title>{{ pokemon.name | titlecase }}</mat-card-title>
+      </mat-card>
+    </div>
 
-  <div class="load-more-container">
-    <button mat-raised-button color="primary" (click)="loadMore()" [disabled]="loading">
-      <mat-spinner *ngIf="loading" diameter="24"></mat-spinner>
-      {{ loading ? 'Loading...' : 'Load More' }}
-    </button>
-  </div>
-</ng-container>
+    <div class="load-more-container">
+      <button mat-raised-button color="primary" (click)="loadMore()" [disabled]="loading">
+        <mat-spinner *ngIf="loading" diameter="24"></mat-spinner>
+        {{ loading ? 'Loading...' : 'Load More' }}
+      </button>
+    </div>
+  </ng-container>
 
-<!-- No Pokémon Found -->
-<ng-template #noPokemons>
-  <p>No Pokémon found.</p>
-</ng-template>
+  <ng-template #noPokemons>
+    <p>No Pokémon found.</p>
+  </ng-template>
 
-<!-- Loading Indicator -->
-<ng-container *ngIf="loading && pokemons.length === 0">
-  <mat-spinner></mat-spinner>
-</ng-container>
+  <ng-container *ngIf="loading && pokemons.length === 0">
+    <mat-spinner></mat-spinner>
+  </ng-container>
+</div>
