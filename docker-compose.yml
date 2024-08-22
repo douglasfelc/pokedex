@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  angular-app:
+    build:
+      context: ./app
+      dockerfile: ./devops/Dockerfile.development
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./app:/app
+      - /app/node_modules
+    networks:
+      - poke-network
+
+  nestjs-api:
+    build:
+      context: ./api
+      dockerfile: ./devops/Dockerfile.development
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./api:/app
+      - /app/node_modules
+    networks:
+      - poke-network
+    environment:
+      - NODE_ENV=development
+
+networks:
+  poke-network:
+    driver: bridge
