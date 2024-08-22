@@ -16,6 +16,10 @@ export class PokemonService {
     return this.http.get(`${this.apiUrl}`, { params });
   }
 
+  getPokemonDetails(name: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${name}`);
+  }
+
   searchPokemon(name: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/search`, {
       params: { name },
