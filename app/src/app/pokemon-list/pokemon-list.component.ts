@@ -46,6 +46,7 @@ export class PokemonListComponent {
     this.pokemonService.getPokemonList(this.limit, this.offset).subscribe({
       next: (data) => {
         this.pokemons = [...this.pokemons, ...data.results];
+        this.filteredPokemons = this.pokemons;
         this.offset += this.limit;
         this.loading = false;
       },
@@ -72,12 +73,10 @@ export class PokemonListComponent {
 
   filterPokemons(): void {
     const query = this.searchQuery.toLowerCase();
-    const teste = this.pokemons.filter(pokemon =>
+    if (!query) this.filteredPokemons = this.pokemons;
+
+    this.filteredPokemons = this.pokemons.filter(pokemon =>
       pokemon.name.toLowerCase().includes(query)
     );
-
-    console.log('oi', teste);
-
-    this.filteredPokemons = teste;
   }
 }
