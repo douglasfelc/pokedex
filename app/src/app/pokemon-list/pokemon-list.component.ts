@@ -4,6 +4,10 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pokemon-list',
@@ -12,18 +16,26 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     CommonModule,
     MatCardModule,
     MatButtonModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule
   ],
   templateUrl: './pokemon-list.component.html',
   styleUrls: ['./pokemon-list.component.scss']
 })
 export class PokemonListComponent {
   pokemons: any[] = [];
+  filteredPokemons: any[] = [];
   loading = false;
   limit = 20;
   offset = 0;
+  searchQuery = '';
 
-  constructor(private pokemonService: PokemonService) {}
+  constructor(
+    private router: Router,
+    private pokemonService: PokemonService
+  ) {}
 
   ngOnInit(): void {
     this.loadPokemons();
@@ -50,7 +62,22 @@ export class PokemonListComponent {
     }
   }
 
+  goToPokemonDetails(name: string): void {
+    this.router.navigate(['/pokemon/', name]);
+  }
+
   getPokemonImageUrl(id: number): string {
     return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
+  }
+
+  filterPokemons(): void {
+    const query = this.searchQuery.toLowerCase();
+    const teste = this.pokemons.filter(pokemon =>
+      pokemon.name.toLowerCase().includes(query)
+    );
+
+    console.log('oi', teste);
+
+    this.filteredPokemons = teste;
   }
 }

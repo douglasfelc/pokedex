@@ -5,6 +5,11 @@
   padding: 50px;
 }
 
+mat-form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
 .pokemon-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));

@@ -1,9 +1,16 @@
-<h1>Pokémons List</h1>
-
 <div class="pokemon-container">
-  <ng-container *ngIf="pokemons.length > 0; else noPokemons">
+  <mat-form-field appearance="fill">
+    <mat-label>Search Pokémon</mat-label>
+    <input matInput [(ngModel)]="searchQuery" (ngModelChange)="filterPokemons()" placeholder="Enter Pokémon name">
+  </mat-form-field>
+
+  <ng-container *ngIf="filteredPokemons.length > 0; else noPokemons">
     <div class="pokemon-grid">
-      <mat-card *ngFor="let pokemon of pokemons" class="pokemon-card">
+      <mat-card
+        *ngFor="let pokemon of filteredPokemons"
+        class="pokemon-card"
+        (click)="goToPokemonDetails(pokemon.name)"
+      >
         <img mat-card-image [src]="getPokemonImageUrl(pokemon.id)" alt="{{ pokemon.name }}">
         <mat-card-title>{{ pokemon.name | titlecase }}</mat-card-title>
       </mat-card>
