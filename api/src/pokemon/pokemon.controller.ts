@@ -14,7 +14,7 @@ export class PokemonController {
     }
   
     @Get(':name')
-    async getPokemonDetails(@Param('name') name: string) {
-      return this.pokemonService.getPokemonDetails(name);
+    async getPokemonByName(@Param('name') name: string) {
+      return this.pokemonService.getPokemonByName(name);
     }
 }

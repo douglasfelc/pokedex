@@ -34,18 +34,16 @@ export class PokemonDetailsComponent {
     this.route.paramMap.subscribe(params => {
       const name = params.get('name');
       if (name) {
-        this.pokemonService.getPokemonDetails(name).subscribe({
+        this.pokemonService.getPokemonByName(name).subscribe({
           next: (data) => {
             this.pokemon = data;
             this.abilities = this.formatAbilities(data.abilities);
             this.types = this.formatTypes(data.types);
-            this.loading = false;
           },
           error: (error) => {
             console.error('Error fetching Pokémon details:', error);
-            this.loading = false;
           }
-        });
+        }).add(() => this.loading = false)
       }
     });
   }

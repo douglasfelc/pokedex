@@ -23,7 +23,7 @@ export class PokemonService {
     return response.data;
   }
 
-  async getPokemonDetails(name: string): Promise<any> {
+  async getPokemonByName(name: string): Promise<any> {
     const response = await firstValueFrom(
       this.httpService.get(`${this.apiUrl}/${name}`),
     );

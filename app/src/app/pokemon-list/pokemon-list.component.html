@@ -4,7 +4,7 @@
     <input matInput [(ngModel)]="searchQuery" (ngModelChange)="filterPokemons()" placeholder="Enter Pokémon name">
   </mat-form-field>
 
-  <ng-container *ngIf="filteredPokemons.length > 0; else noPokemons">
+  <ng-container *ngIf="filteredPokemons.length; else noPokemons">
     <div class="pokemon-grid">
       <mat-card
         *ngFor="let pokemon of filteredPokemons"

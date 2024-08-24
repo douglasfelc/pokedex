@@ -48,19 +48,16 @@ export class PokemonListComponent {
         this.pokemons = [...this.pokemons, ...data.results];
         this.filteredPokemons = this.pokemons;
         this.offset += this.limit;
-        this.loading = false;
       },
       error: (error) => {
         console.error('Error fetching Pokémon:', error);
-        this.loading = false;
       }
-    });
+    }).add(() => this.loading = false);
   }
 
   loadMore(): void {
-    if (!this.loading) {
-      this.loadPokemons();
-    }
+    this.searchQuery = '';
+    if (!this.loading) this.loadPokemons();
   }
 
   goToPokemonDetails(name: string): void {
@@ -78,5 +75,20 @@ export class PokemonListComponent {
     this.filteredPokemons = this.pokemons.filter(pokemon =>
       pokemon.name.toLowerCase().includes(query)
     );
+
+    if (query.length < 3) return;
+    this.loading = true;
+    this.pokemonService.getPokemonByName(query).subscribe({
+      next: (data) => {
+        this.filteredPokemons = [{
+          id: data.id,
+          name: data.name,
+          url: `https://pokeapi.co/api/v2/pokemon/${data.id}/`
+        }]
+      },
+      error: (error) => {
+        console.error('Error fetching Pokémon details:', error);
+      }
+    }).add(() => this.loading = false);
   }
 }
