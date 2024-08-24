@@ -22,3 +22,10 @@ $ npm install
 ```bash
 # development
 $ npm run start
+```
+
+### Run unit tests
+
+```bash
+$ npm run test
+```
