@@ -18,8 +18,21 @@ git clone https://github.com/douglasfelc/pokedex.git
 - `docker compose build` to build image
 - `docker compose up -d` to create and start containers
 
+#### Local servers
+➜  API: http://localhost:3000/ \
+➜  App: http://localhost:4200/
+
+
+# Unit tests
+
+Unit tests will be run whenever a `push` is made.
+
+To run unit tests locally, see the API documentation below.
+
 
 # Documentation
+
+See more about the individual documentation:
 
 [Click here](./api/README.md) to see more about the API. \
 [Click here](./app/README.md) to see more about the App.
