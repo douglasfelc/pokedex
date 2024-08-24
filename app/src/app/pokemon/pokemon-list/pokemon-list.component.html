@@ -1,0 +1,34 @@
+<div class="pokemon-container">
+  <mat-form-field appearance="fill">
+    <mat-label>Search Pokémon</mat-label>
+    <input matInput [(ngModel)]="searchQuery" (ngModelChange)="filterPokemons()" placeholder="Enter Pokémon name">
+  </mat-form-field>
+
+  <ng-container *ngIf="filteredPokemons.length; else noPokemons">
+    <div class="pokemon-grid">
+      <mat-card
+        *ngFor="let pokemon of filteredPokemons"
+        class="pokemon-card"
+        (click)="goToPokemonDetails(pokemon.name)"
+      >
+        <img mat-card-image [src]="getPokemonImageUrl(pokemon.id)" alt="{{ pokemon.name }}">
+        <mat-card-title>{{ pokemon.name | titlecase }}</mat-card-title>
+      </mat-card>
+    </div>
+
+    <div class="load-more-container">
+      <button mat-raised-button color="primary" (click)="loadMore()" [disabled]="loading">
+        <mat-spinner *ngIf="loading" diameter="24"></mat-spinner>
+        {{ loading ? 'Loading...' : 'Load More' }}
+      </button>
+    </div>
+  </ng-container>
+
+  <ng-template #noPokemons>
+    <p>No Pokémon found.</p>
+  </ng-template>
+
+  <ng-container *ngIf="loading && pokemons.length === 0">
+    <mat-spinner></mat-spinner>
+  </ng-container>
+</div>

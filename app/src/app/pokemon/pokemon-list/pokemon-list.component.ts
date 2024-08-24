@@ -1,0 +1,94 @@
+import { Component } from '@angular/core';
+import { PokemonService } from '../pokemon.service';
+import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-pokemon-list',
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatButtonModule,
+    MatProgressSpinnerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule
+  ],
+  templateUrl: './pokemon-list.component.html',
+  styleUrls: ['./pokemon-list.component.scss']
+})
+export class PokemonListComponent {
+  pokemons: any[] = [];
+  filteredPokemons: any[] = [];
+  loading = false;
+  limit = 20;
+  offset = 0;
+  searchQuery = '';
+
+  constructor(
+    private router: Router,
+    private pokemonService: PokemonService
+  ) {}
+
+  ngOnInit(): void {
+    this.loadPokemons();
+  }
+
+  loadPokemons(): void {
+    this.loading = true;
+    this.pokemonService.getPokemonList(this.limit, this.offset).subscribe({
+      next: (data) => {
+        this.pokemons = [...this.pokemons, ...data.results];
+        this.filteredPokemons = this.pokemons;
+        this.offset += this.limit;
+      },
+      error: (error) => {
+        console.error('Error fetching Pokémon:', error);
+      }
+    }).add(() => this.loading = false);
+  }
+
+  loadMore(): void {
+    this.searchQuery = '';
+    if (!this.loading) this.loadPokemons();
+  }
+
+  goToPokemonDetails(name: string): void {
+    this.router.navigate(['/pokemon/', name]);
+  }
+
+  getPokemonImageUrl(id: number): string {
+    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
+  }
+
+  filterPokemons(): void {
+    const query = this.searchQuery.toLowerCase();
+    if (!query) this.filteredPokemons = this.pokemons;
+
+    this.filteredPokemons = this.pokemons.filter(pokemon =>
+      pokemon.name.toLowerCase().includes(query)
+    );
+
+    if (query.length < 3) return;
+    this.loading = true;
+    this.pokemonService.getPokemonByName(query).subscribe({
+      next: (data) => {
+        this.filteredPokemons = [{
+          id: data.id,
+          name: data.name,
+          url: `https://pokeapi.co/api/v2/pokemon/${data.id}/`
+        }]
+      },
+      error: (error) => {
+        console.error('Error fetching Pokémon details:', error);
+      }
+    }).add(() => this.loading = false);
+  }
+}
